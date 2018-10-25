@@ -1,80 +1,79 @@
 
+边缘节点
+--------- 
 
-Edge node
----------
+您需要在要与* same * 
+社区连接的每个主机上启动边缘节点。
 
-You need to start an edge node on each host you want to connect with the *same*
-community.
+0.成为root 
 
-0. become root
-
-1. create tun device
+1.创建tun设备
 # tunctl -t tun0
 
-3. enable the edge process
+3.启用边缘进程
 # ./edge -d n2n0 -c mynetwork -k encryptme -u 99 -g 99 -m 3C:A0:12:34:56:78 -a 1.2.3.4 -l a.b.c.d:xyw
- or
+ 或
 # N2N_KEY=encryptme ./edge -d n2n0 -c mynetwork -u 99 -g 99 -m 3C:A0:12:34:56:78 -a 1.2.3.4 -l a.b.c.d:xyw
 
-Once you have this worked out, you can add the "-f" option to make edge detach
-and run as a daemon.
+一旦解决了这个问题，就可以添加“-f”选项来进行边缘分离
+并作为守护进程运行。
 
-Note that -u, -g and -f options are not available for Windows.
+请注意，-u，-g和-f选项不适用于Windows。
 
-Supernode
---------
+超级
+-------- 
 
-You need to start the supernode once
+您需要一次启动超级
 
 1. ./supernode -l 1234 -v
 
 
-Dropping Root Privileges and SUID-Root Executables (UNIX)
---------------------------------------------------
+删除根权限和SUID-Root可执行文件（UNIX）
+----------------------------- --------------------- 
 
-The edge node uses superuser privileges to create a TAP network interface
-device. Once this is created root privileges are not required and can constitute
-a security hazard if there is some way for an attacker to take control of an
-edge process while it is running. Edge will drop to a non-privileged user if you
-specify the -u <uid> and -g <gid> options. These are numeric IDs. Consult
-/etc/passwd.
+边缘节点使用超级用户权限来创建TAP网络接口
+设备。一旦创建了此权限，就不需要root权限，
+如果攻击者在
+运行时有某种方法可以控制边缘进程，则可能构成安全隐患。如果
+指定-u <uid>和-g <gid>选项，Edge将删除给非特权用户。这些是数字ID。咨询
+/ etc / passwd。
 
-You may choose to install edge SUID-root to do this:
+你可以选择安装边缘SUID-root来做到这一点：
 
-1. Become root
-2. chown root:root edge
-3. chmod +s edge
+1。成为root 
+2. chown root：root edge 
+3. chmod + s edge 
 done
 
-Any user can now run edge. You may not want this, but it may be convenient and
-safe if your host has only one login user.
+任何用户现在都可以运行边缘。您可能不需要这样，但
+如果您的主机只有一个登录用户，则可能会方便安全。
 
 
-Running As a Daemon (UNIX)
--------------------
+作为守护程序运行（UNIX）
+------------------- 
 
-Unless given "-f" as a command line option, edge will call daemon(3) after
-successful setup. This causes the process to fork a child which closes stdin,
-stdout and stderr then sets itself as process group leader. When this is done,
-the edge command returns immediately and you will only see the edge process in
-the process listings, eg. from ps or top.
+除非将“-f”作为命令行选项，否则edge将在
+成功安装后调用守护程序（3）。这会导致进程分叉关闭stdin的子进程，
+stdout和stderr然后将自己设置为进程组领导。完成此操作后，
+edge命令立即返回，您将只看到
+流程列表中的边缘流程，例如。来自ps或顶部。
 
-If the edge command returns 0 then the daemon started successfully. If it
-returns non-zero then edge failed to start up for some reason. When edge starts
-running as a daemon, all logging goes to syslog daemon.info facility.
+如果edge命令返回0，则守护程序成功启动。如果它
+返回非零，则由于某种原因，边缘无法启动。边缘开始时
+作为守护进程运行，所有日志记录都将进入syslog daemon.info工具。
 
 
-IPv6 Support
-------------
+IPv6支持
+------------ 
 
-n2n supports the carriage of IPv6 packets within the n2n tunnel. N2n does not
-yet use IPv6 for transport between edges and supernodes.
+n2n支持在n2n隧道中携带IPv6数据包。N2n 
+尚未使用IPv6进行边缘和超级节点之间的传输。
 
-To make IPv6 carriage work you need to manually add IPv6 addresses to the TAP
-interfaces at each end. There is currently no way to specify an IPv6 address on
-the edge command line.
+要使IPv6运行工作，您需要手动将IPv6地址添加到
+每端的TAP 接口。目前无法
+在边缘命令行上指定IPv6地址。
 
-eg. under linux:
+例如。在linux下：
 
 on hostA:
 [hostA] # /sbin/ip -6 addr add fc00:abcd:1234::7/48 dev n2n0
@@ -82,20 +81,20 @@ on hostA:
 on hostB:
 [hostB] # /sbin/ip -6 addr add fc00:abcd:1234::6/48 dev n2n0
 
-You may find it useful to make use of tunctl from the uml-utilities
-package. Tunctl allow you to bring up a TAP interface and configure addressing
-prior to starting edge. It also allows edge to be restarted without the
-interface closing (which would normally affect routing tables).
+您可能会发现从uml-utilities 
+包中使用tunctl很有用。Tunctl允许您
+在启动边缘之前调出TAP接口并配置寻址。它还允许在不
+关闭接口的情况下重新启动边缘（这通常会影响路由表）。
 
-Once the IPv6 addresses are configured and edge started, IPv6 neighbor discovery
-packets flow (get broadcast) and IPv6 entities self arrange. Test your IPv6
-setup with ping6 - the IPv6 ping command.
+配置IPv6边缘并开始边缘后，IPv6邻居发现
+数据包流（获取广播），IPv6实体自行排列。
+使用ping6  -  IPv6 ping命令测试您的IPv6 设置。
 
 
-Performance Notes
------------------
+性能注释
+----------------- 
 
-The time taken to perform a ping test for various ciphers is given below:
+对各种密码执行ping测试所需的时间如下：
 
 Test: ping -f -l 8 -s 800 -c 10000 <far_edge>
 
