@@ -1,13 +1,13 @@
-This is a development branch of the n2n p2p vpn software.
+这是n2n p2p vpn软件的开发分支。
 
 https://github.com/ntop/n2n
 
-It contains some modifications of the v2 version of n2n, which is the latest stable version
-and should be used for productive environments.
-All the current development happens in this repository in the new_protocol branch, which is 
-intended to be come version v3 of n2n and then merged back into the original svn repository
-on ntop.org.
+它包含对n2n的v2版本的一些修改，这是最新的稳定版本
+并应用于生产环境。
+所有当前的开发都发生在new_protocol分支的这个存储库中，即 
+打算来到n2n的v3版本，然后合并回原来的svn存储库
+在ntop.org上。
 
-Uses sglib http://sglib.sourceforge.net.
+使用sglib http://sglib.sourceforge.net。
 
-For further information please visit the wiki https://github.com/meyerd/n2n/wiki.
+有关详细信息，请访问wiki https://github.com/meyerd/n2n/wiki。
