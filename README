@@ -10,4 +10,17 @@ https://github.com/ntop/n2n
 
 使用sglib http://sglib.sourceforge.net。
 
-有关详细信息，请访问wiki https://github.com/meyerd/n2n/wiki。
+新协议和密码规范
+新协议版本的文档将在此处完成：https：//github.com/meyerd/n2n/tree/p2p_crypto/doc
+
+改进思路
+重新分配数据包格式
+改进的加密（使用加密密钥或由pbkdf2生成）
+MAC（带第二个密钥，超级节点应该检查以防止泄漏私有边缘信息）
+会话密钥
+向前保密
+评估DTLS的用法
+评估gnutls和gnupg的支持
+清除pending_peers
+看看lzo压缩（似乎主要是实现但不起作用）
+
