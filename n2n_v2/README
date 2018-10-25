@@ -152,7 +152,7 @@ edge2s -d n2n2s -a 10.10.10.10 -c n2n -k n2n -f -L 192.168.123.1 -l n2n.lucktu.c
 6、怎么增加直连的成功率？
 
 改善通讯的两端的网络结构，见这篇文章： NAT类型科普及一些简单提升NAT类型的方法 。简单的一些方法就是，（如果可能）windows上关闭防火墙，路由器上设置DMZ到某台机器，padavan路由器设置NAT类型为 Full Cone NAT，等等。要用新版的v2s，直连成功率上升很多。
-![1](img/n2nmsg.png)
+<img src="http://www.lucktu.com//wp/wp-content/uploads/Soft/n2n/n2nmsg.png" alt="">
 在padavan上，我发现一直不停的ping对方，反而不易直连（貌似为了保持网络的稳定性，它不易调整自己去创造直连），如果ping5次，停30秒，再ping次，再停30秒，再ping5次，再停90秒，然后就可以直连了。为了保持这个直连状态，我在这个90秒以后，驻留了一个ping在内存之中，这样即使中心节点断开，我的直连仍然会处于保持状态。我把下面的脚本加入到这里了： 高级设置--自定义设置--脚本--在WAN上行/下行启动后执行：
 ### HOLD P2P
   sleep 5;
