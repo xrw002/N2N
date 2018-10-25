@@ -3,9 +3,17 @@ cd # cd n2n/n2n_v2
 #make
 
 #make install
+ cp supernode /usr/sbin/
+ cp edge /usr/sbin/
+ 
+ super节点服务起来
+supernode -l 1000 -v >/dev/null &
+edge节点服务起来
 
-边缘节点
---------- 
+节点1
+edge -d n2n0 -c mynetwork -k encryptme -a 10.0.0.1 -l xxx.xxx.xxx.xxx:1000 >/dev/null &
+节点2
+edge -d n2n0 -c mynetwork -k encryptme -a 10.0.0.2 -l xxx.xxx.xxx.xxx:1000 >/dev/null &
 
 您需要在要与* same * 
 社区连接的每个主机上启动边缘节点。
